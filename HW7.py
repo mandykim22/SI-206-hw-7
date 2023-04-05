@@ -69,9 +69,17 @@ def make_players_table(data, cur, conn):
  
     # It selects all the players from any of the countries in the list
     # and returns a list of tuples. Each tuple contains:
-        # the player's name, their position_id, and their nationality.
+        # the player's name, their position_id, and their nationality.\
 
 def nationality_search(countries, cur, conn):
+    players = cur.execute("SELECT name, position_id, nationality from Players").fetchall()
+    ret_list = []
+
+    for player in players:
+        if player[2] in countries:
+            ret_list.append(player)
+    return ret_list
+    
     pass
 
 ## [TASK 3]: 10 points
