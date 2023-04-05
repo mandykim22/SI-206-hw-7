@@ -121,7 +121,9 @@ def birthyear_nationality_search(age, country, cur, conn):
     # HINT: You'll have to use JOIN for this task.
 
 def position_birth_search(position, age, cur, conn):
-       pass
+    players = cur.execute("SELECT name, position, birthyear from Players INNER JOIN  Positions ON players.position_id = positions.id where birthyear > 2023 - ? AND position = ?", (age, position)).fetchall()
+    return players
+    pass
 
 
 # [EXTRA CREDIT]
@@ -160,9 +162,21 @@ def position_birth_search(position, age, cur, conn):
 #     the passed year. 
 
 def make_winners_table(data, cur, conn):
+    winners = []
+    for season in data['seasons']:
+        if season['winner'] != None:
+            winner = (season['winner']['id'], season['winner']['name'])
+            if winner not in winners:
+                winners.append(winner)
+    cur.execute("CREATE TABLE IF NOT EXISTS Winners (id INTEGER PRIMARY KEY, name TEXT)")
+    for i in range(len(winners)):
+        cur.execute("INSERT OR IGNORE INTO Winners (id, name) VALUES (?, ?)",(winners[i][0], winners[i][1]))
+    conn.commit()
+
     pass
 
 def make_seasons_table(data, cur, conn):
+    
     pass
 
 def winners_since_search(year, cur, conn):
