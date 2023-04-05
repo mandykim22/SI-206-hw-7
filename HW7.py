@@ -79,7 +79,7 @@ def nationality_search(countries, cur, conn):
         if player[2] in countries:
             ret_list.append(player)
     return ret_list
-    
+
     pass
 
 ## [TASK 3]: 10 points
@@ -99,6 +99,8 @@ def nationality_search(countries, cur, conn):
 
 
 def birthyear_nationality_search(age, country, cur, conn):
+    players = cur.execute("SELECT name, nationality, birthyear from Players where birthyear < 2023 - ? AND nationality = ?", (age, country)).fetchall()
+    return players
     pass
 
 ## [TASK 4]: 15 points
