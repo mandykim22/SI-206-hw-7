@@ -176,7 +176,17 @@ def make_winners_table(data, cur, conn):
     pass
 
 def make_seasons_table(data, cur, conn):
-    
+    seasons = []
+    for season in data ['seasons']:
+        if season['winner'] != None:
+            add_season = (season['id'], season['winner']['id'], season['endDate'][0:4])
+            if add_season not in seasons:
+                seasons.append(add_season)
+    cur.execute("CREATE TABLE IF NOT EXISTS Seasons (id INTEGER PRIMARY KEY, winner_id TEXT, end_year INTEGER)")
+    for i in range(len(seasons)):
+        cur.execute ("INSERT OR IGNORE INTO Seasons (id, winner_id, end_year) VALUES (?, ?, ?)",(seasons[i][0], str(seasons[i][1]), int(seasons[i][2])))
+    conn.commit()
+
     pass
 
 def winners_since_search(year, cur, conn):
