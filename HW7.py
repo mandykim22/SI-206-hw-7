@@ -190,6 +190,14 @@ def make_seasons_table(data, cur, conn):
     pass
 
 def winners_since_search(year, cur, conn):
+    answers = cur.execute("SELECT name from Seasons INNER JOIN Winners ON Seasons.winner_id = Winners.id where end_year > ?", (int(year),)).fetchall()
+    dictionary= {}
+    for answer in answers:
+        if answer[0] not in dictionary:
+            dictionary[answer[0]] = 0
+        dictionary[answer[0]] += 1
+
+    return dictionary
     pass
 
 
