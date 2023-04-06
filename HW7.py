@@ -257,16 +257,24 @@ class TestAllMethods(unittest.TestCase):
         self.cur2.execute('SELECT * from Winners')
         winners_list = self.cur2.fetchall()
 
+        self.assertTrue((65, 'Manchester City FC') in winners_list)
+        self.assertTrue((338, 'Leicester City FC') in winners_list)
+
         pass
 
     def test_make_seasons_table(self):
         self.cur2.execute('SELECT * from Seasons')
         seasons_list = self.cur2.fetchall()
 
+        self.assertTrue((619, "65", 2021) in seasons_list)
+        self.assertTrue((468, "64", 2020) in seasons_list)
+
         pass
 
     def test_winners_since_search(self):
-
+        answer = winners_since_search(2015, self.cur2, self.conn2)
+        self.assertEqual(answer["Manchester City FC"], 3)
+        self.assertEqual(answer["Leicester City FC"], 1)
         pass
 
 
